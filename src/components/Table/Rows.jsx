@@ -10,20 +10,15 @@ import PropTypes from 'prop-types'
 function Rows({ data }) {
   return (
     <>
-      {data?.map(
-        (
-          /** @type {{ [s: string]: any; } | ArrayLike<any>} */ object,
-          /** @type {import("react").Key} */ index
-        ) => (
-          <tr key={index} id={`row-${index}`}>
-            {Object.entries(object).map((el, index) => (
-              <td key={index} data-label={el[0]}>
-                {el[1]}
-              </td>
-            ))}
-          </tr>
-        )
-      )}
+      {data?.map((obj, index) => (
+        <tr key={index} id={`row-${index}`}>
+          {Object.entries(obj).map((el, index) => (
+            <td key={index} data-label={el[0]}>
+              {el[1]}
+            </td>
+          ))}
+        </tr>
+      ))}
     </>
   )
 }

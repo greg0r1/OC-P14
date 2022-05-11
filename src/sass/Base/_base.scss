@@ -21,7 +21,6 @@ body {
 .container {
   width: auto;
   margin: auto;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,13 +33,14 @@ body {
 }
 
 button {
-  padding: 10px 40px;
+  padding: 10px 60px;
   margin: 15px;
-  width: 12em;
   min-width: min-content;
-  border: solid 1px #d9d9d9;
+  border: solid 1px darken($secondary, 10%);
   border-radius: 5px;
-  color: #404040;
+  color: $primary;
+  cursor: pointer;
+  background-color: $secondary;
 }
 
 a {
@@ -57,5 +57,5 @@ input.invalid {
 }
 
 #root {
-  height: 100vh;
+  height: auto;
 }

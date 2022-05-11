@@ -7,9 +7,11 @@
 }
 
 @mixin input_select {
+    border: 1px solid $secondary;
+    background-color: $secondary;
+    border-radius: 5px;
     width: 250px;
     margin: auto;
-    padding: 5px 10px;
-    display: block;
+    padding: 10px 10px;
     box-sizing: border-box;
 }

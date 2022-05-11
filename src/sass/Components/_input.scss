@@ -1,8 +1,42 @@
-input {
-    @include input_select
-}
-
 label {
     display: block;
-    margin: 5px auto
+    margin: 5px auto;
+
+    input {
+        @include input_select;
+
+        &:focus {
+            border: none;
+        }
+    }
+
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+
+    input[type=number] {
+        position: relative;
+    }
+
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        opacity: 1;
+        -webkit-appearance: inner-spin-button !important;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 20px;
+        height: auto;
+        padding: 3px 1em 0px 0;
+    }
 }

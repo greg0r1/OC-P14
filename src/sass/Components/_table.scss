@@ -1,33 +1,92 @@
-table {
-    border-spacing: unset;
-    border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;
-    border: 1px solid #ddd;
+#table {
 
-
-    th,
-    td {
-        text-align: left;
-        padding: 8px;
+    &>* {
+        margin: 10px 0;
     }
 
-    tr:nth-child(even) {
-        background-color: #f2f2f2
+    select {
+        cursor: pointer;
     }
 
-    td {
-        padding: 5px 15px;
-        word-break: break-word;
-        white-space: nowrap;
+    .table-top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+
+        .selectAmountEntries select {
+            border: 2px solid #f2f2f2;
+            background: #f2f2f2;
+            padding: 3px 13px;
+            border-radius: 5px;
+            display: inline-flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
     }
 
-    thead,
-    tfoot {
-        background-color: #333;
-        color: #fff;
+    .table-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    table {
+
+        border-spacing: unset;
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: none;
+        background: #FFF;
+
+        .arrow {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon x='100' y='0' width='100' height='100' points='0,0  100,0  50,100' fill='%23FFF'/%3E%3C/svg%3E");
+            padding: 10px;
+            background-position: center;
+            background-size: 50%;
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 5px 15px;
+            word-break: break-word;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+
+        thead,
+        tfoot {
+            background-color: #333;
+            color: #fff;
+        }
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        span {
+            background: #f2f2f2;
+            width: 2rem;
+            border-radius: 50%;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: default;
+        }
     }
 }
+
 
 @include mobile {
     table {

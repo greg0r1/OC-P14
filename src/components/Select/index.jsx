@@ -1,6 +1,6 @@
 //@ts-check
 
-import { useState, useRef, useEffect } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 
 /**
@@ -8,110 +8,105 @@ import PropTypes from 'prop-types'
  * @param {Object} props
  * @param {String} props.label
  * @param {Array} props.options
- * @param {String} props.selectValue
- * @param {Function} props.setSelectValue
+ * @param {Number} props.selectedOption
+ * @param {Function} props.setSelectedOption
  * @returns {React.ReactElement}
  */
-function Select({ label, options, selectValue, setSelectValue }) {
-  const [displayOptions, setDisplayOptions] = useState(false)
-  const [dropdownContainerSize, setDropdownContainerSize] = useState({
+function Select({ label, options, selectedOption, setSelectedOption }) {
+  const [isOptionsOpen, setIsOptionsOpen] = useState(false)
+  const labelEl = useRef(null)
+  const liEl = useRef(null)
+  const [buttonSize, setButtonSize] = useState({
     width: 0,
     height: 0,
   })
-  const selectmenuEl = useRef(null)
-  const ulEl = useRef(null)
-  const [keyPressed, setKeyPressed] = useState(0)
-
-  function handleClick(ref, event) {
-    setDropdownContainerSize((state) => ({
-      ...state,
-      width: ref.current.clientWidth,
-    }))
-    setDropdownContainerSize((state) => ({
-      ...state,
-      height: ref.current.clientHeight,
-    }))
-    displayOptions ? setDisplayOptions(false) : setDisplayOptions(true)
-    event.preventDefault()
+  const toggleOptions = () => {
+    setIsOptionsOpen(!isOptionsOpen)
   }
 
-  function downHandler({ key }) {
-    if (key === 'ArrowDown') {
-      setKeyPressed((state) => state + 1)
-    }
-  }
-
-  const upHandler = ({ key }) => {
-    if (key === 'ArrowUp') {
-      setKeyPressed((state) => (state >= 1 ? state - 1 : 0))
+  // Event handler for keydowns
+  const handleKeyDown = (index) => (e) => {
+    switch (e.key) {
+      case ' ':
+      case 'SpaceBar':
+      case 'Enter':
+        e.preventDefault()
+        setSelectedOption(index)
+        setIsOptionsOpen(false)
+        break
+      case 'ArrowDown':
+        e.preventDefault()
+        console.log(liEl)
+        break
+      default:
+        break
     }
   }
 
   useEffect(() => {
-    !displayOptions && setKeyPressed(0)
-    // ulEl.current.childNodes[keyPressed].focus()
-    if (displayOptions) {
-      window.addEventListener('keydown', downHandler)
-      window.addEventListener('keyup', upHandler)
+    setButtonSize((state) => ({
+      ...state,
+      width: labelEl.current.clientWidth,
+    }))
+    setButtonSize((state) => ({
+      ...state,
+      height: labelEl.current.clientHeight,
+    }))
 
-      return () => {
-        window.removeEventListener('keydown', downHandler)
-        window.removeEventListener('keyup', upHandler)
+    function handler(event) {
+      if (!labelEl.current?.contains(event.target)) {
+        setIsOptionsOpen(false)
       }
     }
-  }, [displayOptions, keyPressed, options])
+    window.addEventListener('click', handler)
+    return () => window.removeEventListener('click', handler)
+  }, [])
 
   return (
-    <label>
-      {label}
-      <div ref={selectmenuEl} className="selectmenu">
-        <div
-          className={`selectmenu-text ${
-            displayOptions ? 'borderBottomNone' : ''
-          }`}
-          tabIndex={0}
-          onClick={(e) => handleClick(selectmenuEl, e)}
-          onKeyPress={(e) => handleClick(selectmenuEl, e)}
+    <div className="selectContainer">
+      <label ref={labelEl}>
+        {label}
+        <button
+          type="button"
+          className={`selectButton ${isOptionsOpen ? 'borderBottomNone' : ''}`}
+          aria-haspopup="listbox"
+          aria-expanded={isOptionsOpen}
+          onClick={toggleOptions}
         >
-          <span>{selectValue === undefined ? label : selectValue}</span>
+          {options[selectedOption]}{' '}
           <span
-            className={`selectmenu-arrow ${displayOptions ? 'up' : 'down'}`}
+            className={`selectmenu-arrow ${isOptionsOpen ? 'up' : 'down'}`}
           ></span>
-        </div>
-        <div
-          ref={ulEl}
-          className={`selectmenu ${displayOptions ? 'open' : ''}`}
-          aria-hidden={displayOptions}
-          aria-disabled={false}
-          style={
-            displayOptions
-              ? {
-                  width: selectmenuEl.current.clientWidth + 'px',
-                  marginTop: dropdownContainerSize.height + 1,
-                }
-              : { display: 'none' }
-          }
+        </button>
+        <ul
+          className={`selectmenu-options ${isOptionsOpen ? 'open' : ''}`}
+          style={{ width: buttonSize.width, marginTop: buttonSize.height }}
           role="listbox"
-          tabIndex={0}
+          aria-activedescendant={options[selectedOption]}
+          tabIndex={-1}
         >
-          {options.map((item, index) => {
-            return (
-              <li
-                key={`option-${index.toString()}`}
-                className={`item item-id-${index}`}
-                id={`${index}`}
-                onClick={() => {
-                  setSelectValue(item)
-                  setDisplayOptions(false)
-                }}
-              >
-                <span tabIndex={1}>{`${item}`}</span>
-              </li>
-            )
-          })}
-        </div>
-      </div>
-    </label>
+          {options.map((option, index) => (
+            <li
+              ref={liEl}
+              key={`option-${index.toString()}`}
+              id={option}
+              className={`item item-id-${index}`}
+              role="option"
+              aria-selected={selectedOption === index}
+              tabIndex={0}
+              onKeyDown={handleKeyDown(index)}
+              onClick={(e) => {
+                e.preventDefault()
+                setSelectedOption(index)
+                setIsOptionsOpen(false)
+              }}
+            >
+              {option}
+            </li>
+          ))}
+        </ul>
+      </label>
+    </div>
   )
 }
 
@@ -120,8 +115,8 @@ export default Select
 Select.propType = {
   label: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
-  selectValue: PropTypes.string,
-  setSelectValue: PropTypes.func.isRequired,
+  selectedOption: PropTypes.string,
+  setSelectedOption: PropTypes.func.isRequired,
 }
 
 Select.defaultProps = {

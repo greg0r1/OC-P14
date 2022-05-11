@@ -9,6 +9,12 @@ form {
     legend,
     option {
         text-align: left !important;
+        display: flex;
+        flex-direction: column;
+    }
+
+    label>span {
+        display: contents;
     }
 
     &>div {
@@ -22,9 +28,10 @@ form {
     fieldset {
         padding: 0 25px;
         margin: 5px auto;
+        border: 1px solid lighten($primary, 50%);
 
         &>div {
-            margin: 10px 0;
+            margin: 5px 0;
         }
     }
 }

@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import './sass/main.scss'
-import './index.css';
 import CreateEmployee from './pages/CreateEmployee';
 import EmployeesList from './pages/EmployeesList'
 import { EmployeesProvider } from './utils/context'

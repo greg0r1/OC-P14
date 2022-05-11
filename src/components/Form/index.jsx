@@ -23,46 +23,49 @@ function Form({ states, departments, setSubmitData }) {
   const [street, setStreet] = useState()
   const [city, setCity] = useState()
   const [zipCode, setZipCode] = useState()
-  const [selectValueState, setSelectValueState] = useState()
-  const [selectValueDepartment, setSelectValueDepartment] = useState()
+  const [selectedOptionState, setSelectedOptionState] = useState(0)
+  const [selectedOptionDepartment, setSelectedOptionDepartment] = useState(0)
 
   const dateFormat = (/** @type {Date} */ date) =>
     `${date.getDate() < 10 ? '0' : ''}${date.getDate()}/${
       date.getMonth() < 10 ? '0' : ''
     }${date.getMonth() + 1}/${date.getFullYear()}`
 
-  function setInvalidClass(target) {
-    if (target.value.length <= 1 && target.className !== 'invalid') {
-      target.classList.add('invalid')
+  function setInvalidClass(event) {
+    if (
+      event.target.value.length <= 1 &&
+      event.target.className !== 'invalid'
+    ) {
+      event.target.classList.add('invalid')
     } else {
-      target.classList.remove('invalid')
+      event.target.classList.remove('invalid')
     }
   }
 
-  function handleChange(target, id) {
+  function handleChange(event, id) {
     switch (id) {
       case 'firstName':
-        setFirstName(target.value)
-        setInvalidClass(target)
+        setFirstName(event.target.value)
+        setInvalidClass(event)
         break
       case 'lastName':
-        setLastName(target.value)
-        setInvalidClass(target)
+        setLastName(event.target.value)
+        setInvalidClass(event)
         break
       case 'dateOfBirth':
-        setDateOfBirth(target.value)
+        setDateOfBirth(event.target.value)
         break
       case 'startDate':
-        setStartDate(target.value)
+        setStartDate(event.target.value)
         break
       case 'street':
-        setStreet(target.value)
+        setStreet(event.target.value)
         break
       case 'city':
-        setCity(target.value)
+        setCity(event.target.value)
         break
       case 'zipCode':
-        setZipCode(target.value)
+        setZipCode(event.target.value)
         break
       default:
         break
@@ -75,11 +78,11 @@ function Form({ states, departments, setSubmitData }) {
       firstName: firstName,
       lastName: lastName,
       startDate: dateFormat(startDate),
-      department: selectValueDepartment,
+      department: departments[selectedOptionDepartment],
       dateOfBirth: dateFormat(dateOfBirth),
       street: street,
       city: city,
-      state: selectValueState,
+      state: states[selectedOptionState],
       zipCode: zipCode,
     }
 
@@ -103,12 +106,14 @@ function Form({ states, departments, setSubmitData }) {
         label={'First Name'}
         id={'firstName'}
         onChange={(e) => handleChange(e, 'firstName')}
+        required={true}
       />
       <Input
         type={'text'}
         label={'Last Name'}
         id={'lastName'}
         onChange={(e) => handleChange(e, 'lastName')}
+        required={true}
       />
 
       <DatePickerApp
@@ -142,8 +147,8 @@ function Form({ states, departments, setSubmitData }) {
         <Select
           label={'State'}
           options={states}
-          setSelectValue={setSelectValueState}
-          selectValue={selectValueState}
+          selectedOption={selectedOptionState}
+          setSelectedOption={setSelectedOptionState}
         />
         <Input
           type={'number'}
@@ -159,9 +164,8 @@ function Form({ states, departments, setSubmitData }) {
         <Select
           label={'Department'}
           options={departments}
-          // @ts-ignore
-          setSelected={setSelectValueDepartment}
-          selected={selectValueDepartment}
+          selectedOption={selectedOptionDepartment}
+          setSelectedOption={setSelectedOptionDepartment}
         />
       </div>
       <div className="submitContainer">

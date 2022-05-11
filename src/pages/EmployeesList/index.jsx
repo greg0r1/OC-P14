@@ -17,12 +17,7 @@ function EmployeesList() {
   return (
     <div id="employees" className="container">
       <h1>Current Employees</h1>
-      <Table
-        id={'employee-table'}
-        data={employees}
-        labels={labels}
-        numberOfItemsByPage={10}
-      />
+      <Table data={employees} labels={labels} pagination={10} />
       <nav>
         <NavLink to={'/'}>Home</NavLink>
       </nav>
