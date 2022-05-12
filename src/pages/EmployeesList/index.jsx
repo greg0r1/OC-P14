@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import Table from '../../components/Table'
+import { Table } from 'table-oc-graphigreg'
 import { EmployeesContext } from '../../utils/context'
 import data from '../../mocks'
 
